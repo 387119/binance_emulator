@@ -1,0 +1,39 @@
+version: '3.7'
+
+services:
+  db:
+    image: postgres:11.4
+    restart: "no"
+    expose:
+      - 5432
+    ports:
+      - 127.0.0.1:5432:5432
+    environment:
+            POSTGRES_USER: cc
+            POSTGRES_DB: cc
+            POSTGRES_PASSWORD: Ero5Pooz
+            PGDATA: /pgdata
+    volumes:
+      - ./tmp/pgdata:/pgdata
+      - ./db/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+  app:
+    build: 
+      context: ./app
+      dockerfile: Dockerfile
+    ports:
+      - 0.0.0.0:8089:80
+    depends_on:
+      - db
+    volumes:
+      - ./app/www:/var/www/html
+  graf:
+    image: grafana/grafana
+    ports:
+      - 0.0.0.0:3000:3000
+    environment:
+      GF_INSTALL_PLUGINS: "https://github.com/ilgizar/ilgizar-candlestick-panel/archive/master.zip;ilgizar-candlestick-panel"
+      #grafana-cli --pluginUrl https://github.com/ilgizar/ilgizar-candlestick-panel/archive/master.zip plugins install ilgizar-candlestick-panel
+    volumes:
+      - ./grafana/grafana.ini:/etc/grafana/grafana.ini
+      - ./tmp/grafana:/var/lib/grafana
+

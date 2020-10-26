@@ -1,0 +1,41 @@
+---
+- hosts: cc-servers
+  remote_user: root
+  vars:
+    emulator_path: "/opt/binance/binance-market-emulator"
+    ansible_python_interpreter: "/usr/bin/python3"
+  tasks:
+    - name: create dir for grafana data
+      file:
+        path: "{{ emulator_path }}/tmp/grafana"
+        mode: 0777
+        state: "directory"
+    - name: create dir for pgdata
+      file:
+        path: "{{ emulator_path }}/tmp/pgdata"
+        mode: 0777
+        state: "directory"
+    - name: copy docker file
+      copy:
+        src: ../docker-compose.yml
+        dest: "{{ emulator_path }}/docker-compose.yml"
+    - name: copy app files
+      copy:
+        src: ../app
+        dest: "{{ emulator_path }}"
+    - name: copy db files
+      copy:
+        src: ../db
+        dest: "{{ emulator_path }}"
+    - name: copy grafana files
+      copy:
+        src: ../grafana
+        dest: "{{ emulator_path }}"
+    - name: Stop binance emulator app
+      community.general.docker_compose:
+        project_src: "{{ emulator_path }}"
+        stopped: yes
+    - name: Start binance emulator app
+      community.general.docker_compose:
+        project_src: "{{ emulator_path }}"
+

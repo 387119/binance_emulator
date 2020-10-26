@@ -1,0 +1,124 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<script>
+window.onload = function () {
+	var dataPointsGraph = [];
+	var dataPointsOrdersSell = [];
+	var dataPointsOrdersBuy = [];
+	var chart = new CanvasJS.Chart("chartContainer", {
+		animationEnabled: true,
+		theme: "light2", // "light1", "light2", "dark1", "dark2"
+		exportEnabled: true,
+		zoomEnabled: true,
+		title: {
+			text: "Netflix Stock Price"
+		},
+		subtitles: [{
+			text: "Daily Averages"
+		}],
+		axisX: {
+			interval: 1,
+			valueFormatString: "MMM"
+		},
+		axisY: {
+			includeZero: false,
+			prefix: "$",
+			title: "Price"
+		},
+		axisY2: {
+			prefix: "$",
+			suffix: "bn",
+			title: "Revenue & Income",
+			tickLength: 0
+		},
+		toolTip: {
+			content: "Date: {x}<br /><strong>Price:</strong><br />Open: {y[0]}, Close: {y[3]}<br />High: {y[1]}, Low: {y[2]}"
+		},
+		data: [{
+			type: "candlestick",
+			color: "blue",
+			yValueFormatString: "$#,##0.00",
+//			xValueFormatString: "MMMM",
+			dataPoints: dataPointsGraph
+		},{
+			type: "scatter",
+			color: "red",
+//			showInLegend: true,
+//			name: "Net Income",
+			//axisYType: "secondary",
+			yValueFormatString: "$#,##0.00",
+//			xValueFormatString: "MMMM",
+			dataPoints: dataPointsOrdersSell
+		},{
+			type: "scatter",
+			color: "green",
+//			showInLegend: true,
+//			name: "Net Income",
+			//axisYType: "secondary",
+			yValueFormatString: "$#,##0.00",
+//			xValueFormatString: "MMMM",
+			dataPoints: dataPointsOrdersBuy
+		}]
+	});
+	$.get("getGraph.php", getDataPointsGraph);
+	function getDataPointsGraph(csv) {
+		var csvLines = points = [];
+		csvLines = csv.split(/[\r?\n|\r|\n]+/);
+		for (var i = 0; i < csvLines.length; i++) {
+			if (csvLines[i].length > 0) {
+				points = csvLines[i].split(",");
+				dataPointsGraph.push({
+					x: new Date(points[0]),
+					y: [
+						parseFloat(points[1]),
+						parseFloat(points[2]),
+						parseFloat(points[3]),
+						parseFloat(points[4])
+					]
+				});
+			}
+		}
+		chart.render();
+		console.log(dataPointsGraph);
+	}
+	$.get("getOrders.php?type=sell", getDataPointsOrdersSell);
+	function getDataPointsOrdersSell(csv) {
+		var csvLines = points = [];
+		csvLines = csv.split(/[\r?\n|\r|\n]+/);
+		for (var i = 0; i < csvLines.length; i++) {
+			if (csvLines[i].length > 0) {
+				points = csvLines[i].split(",");
+				dataPointsOrdersSell.push({
+					x: new Date(points[0]),
+					y: parseFloat(points[1])
+				});
+			}
+		}
+		chart.render();
+	}
+	$.get("getOrders.php?type=buy", getDataPointsOrdersBuy);
+	function getDataPointsOrdersBuy(csv) {
+		var csvLines = points = [];
+		csvLines = csv.split(/[\r?\n|\r|\n]+/);
+		for (var i = 0; i < csvLines.length; i++) {
+			if (csvLines[i].length > 0) {
+				points = csvLines[i].split(",");
+				dataPointsOrdersBuy.push({
+					x: new Date(points[0]),
+					y: parseFloat(points[1])
+				});
+			}
+		}
+		chart.render();
+	}
+}
+</script>
+</head>
+<body>
+	<div id="chartContainer" style="height: 100%; width: 100%;"></div>
+	<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+	<script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+</body>
+</html>
+
