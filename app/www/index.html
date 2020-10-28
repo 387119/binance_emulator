@@ -1,124 +1,123 @@
-<!DOCTYPE HTML>
-<html>
-<head>
-<script>
-window.onload = function () {
-	var dataPointsGraph = [];
-	var dataPointsOrdersSell = [];
-	var dataPointsOrdersBuy = [];
-	var chart = new CanvasJS.Chart("chartContainer", {
-		animationEnabled: true,
-		theme: "light2", // "light1", "light2", "dark1", "dark2"
-		exportEnabled: true,
-		zoomEnabled: true,
-		title: {
-			text: "Netflix Stock Price"
-		},
-		subtitles: [{
-			text: "Daily Averages"
-		}],
-		axisX: {
-			interval: 1,
-			valueFormatString: "MMM"
-		},
-		axisY: {
-			includeZero: false,
-			prefix: "$",
-			title: "Price"
-		},
-		axisY2: {
-			prefix: "$",
-			suffix: "bn",
-			title: "Revenue & Income",
-			tickLength: 0
-		},
-		toolTip: {
-			content: "Date: {x}<br /><strong>Price:</strong><br />Open: {y[0]}, Close: {y[3]}<br />High: {y[1]}, Low: {y[2]}"
-		},
-		data: [{
-			type: "candlestick",
-			color: "blue",
-			yValueFormatString: "$#,##0.00",
-//			xValueFormatString: "MMMM",
-			dataPoints: dataPointsGraph
-		},{
-			type: "scatter",
-			color: "red",
-//			showInLegend: true,
-//			name: "Net Income",
-			//axisYType: "secondary",
-			yValueFormatString: "$#,##0.00",
-//			xValueFormatString: "MMMM",
-			dataPoints: dataPointsOrdersSell
-		},{
-			type: "scatter",
-			color: "green",
-//			showInLegend: true,
-//			name: "Net Income",
-			//axisYType: "secondary",
-			yValueFormatString: "$#,##0.00",
-//			xValueFormatString: "MMMM",
-			dataPoints: dataPointsOrdersBuy
-		}]
-	});
-	$.get("getGraph.php", getDataPointsGraph);
-	function getDataPointsGraph(csv) {
-		var csvLines = points = [];
-		csvLines = csv.split(/[\r?\n|\r|\n]+/);
-		for (var i = 0; i < csvLines.length; i++) {
-			if (csvLines[i].length > 0) {
-				points = csvLines[i].split(",");
-				dataPointsGraph.push({
-					x: new Date(points[0]),
-					y: [
-						parseFloat(points[1]),
-						parseFloat(points[2]),
-						parseFloat(points[3]),
-						parseFloat(points[4])
-					]
-				});
-			}
-		}
-		chart.render();
-		console.log(dataPointsGraph);
-	}
-	$.get("getOrders.php?type=sell", getDataPointsOrdersSell);
-	function getDataPointsOrdersSell(csv) {
-		var csvLines = points = [];
-		csvLines = csv.split(/[\r?\n|\r|\n]+/);
-		for (var i = 0; i < csvLines.length; i++) {
-			if (csvLines[i].length > 0) {
-				points = csvLines[i].split(",");
-				dataPointsOrdersSell.push({
-					x: new Date(points[0]),
-					y: parseFloat(points[1])
-				});
-			}
-		}
-		chart.render();
-	}
-	$.get("getOrders.php?type=buy", getDataPointsOrdersBuy);
-	function getDataPointsOrdersBuy(csv) {
-		var csvLines = points = [];
-		csvLines = csv.split(/[\r?\n|\r|\n]+/);
-		for (var i = 0; i < csvLines.length; i++) {
-			if (csvLines[i].length > 0) {
-				points = csvLines[i].split(",");
-				dataPointsOrdersBuy.push({
-					x: new Date(points[0]),
-					y: parseFloat(points[1])
-				});
-			}
-		}
-		chart.render();
-	}
-}
-</script>
-</head>
-<body>
-	<div id="chartContainer" style="height: 100%; width: 100%;"></div>
-	<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-	<script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
-</body>
-</html>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dashboard - Dark Style</title>
 
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Montserrat"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link rel="stylesheet" href="assets/styles.css" />
+  </head>
+
+  <body>
+    <div id="wrapper">
+      <div class="content-area">
+        <div class="container-fluid">
+          <div class="text-right mt-3 mb-3 d-fixed">
+            <a
+              href="https://github.com/apexcharts/apexcharts.js/tree/master/samples/vanilla-js/dashboards/dark"
+              target="_blank"
+              class="btn btn-outline-warning mr-2"
+            >
+              <span class="btn-text">View Code</span>
+            </a>
+            <button class="btn btn-success" id="fusionexport-btn">
+              <span
+                class="spinner-border spinner-border-sm"
+                role="status"
+                aria-hidden="true"
+              ></span>
+              <span class="btn-text">Download as PDF</span>
+            </button>
+          </div>
+          <div class="main">
+            <div class="row sparkboxes mt-4">
+              <div class="col-md-3">
+                <div class="box box1">
+                  <div class="details">
+                    <h3>1213</h3>
+                    <h4>CLICKS</h4>
+                  </div>
+                  <div id="spark1"></div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="box box2">
+                  <div class="details">
+                    <h3>422</h3>
+                    <h4>VIEWS</h4>
+                  </div>
+                  <div id="spark2"></div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="box box3">
+                  <div class="details">
+                    <h3>311</h3>
+                    <h4>LEADS</h4>
+                  </div>
+                  <div id="spark3"></div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="box box4">
+                  <div class="details">
+                    <h3>22</h3>
+                    <h4>SALES</h4>
+                  </div>
+                  <div id="spark4"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-4">
+              <div class="col-md-5">
+                <div class="box shadow mt-4">
+                  <div id="radialBarBottom"></div>
+                </div>
+              </div>
+              <div class="col-md-7">
+                <div class="box shadow mt-4">
+                  <div id="line-adwords" class=""></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-4">
+              <div class="col-md-5">
+                <div class="box shadow mt-4">
+                  <div id="barchart"></div>
+                </div>
+              </div>
+              <div class="col-md-7">
+                <div class="box shadow mt-4">
+                  <div id="areachart"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.slim.min.js"></script>
+    <script src="../../../../dist/apexcharts.js"></script>
+    <!-- installing few libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/downloadjs/1.4.8/download.min.js"></script>
+    <script src="assets/scripts.js"></script>
+  </body>
+</html>
