@@ -232,75 +232,51 @@ new ApexCharts(document.querySelector("#spark3"), spark3).render();
 new ApexCharts(document.querySelector("#spark4"), spark4).render();
 
 
-var optionsLine = {
-	chart: {
-		height: 328,
-		type: 'line',
-		zoom: {
-			enabled: false
-		},
-		dropShadow: {
-			enabled: true,
-			top: 3,
-			left: 2,
-			blur: 4,
-			opacity: 1,
-		}
-	},
-	stroke: {
-		curve: 'smooth',
-		width: 2
-	},
-	//colors: ["#3F51B5", '#2196F3'],
+var optionsCandel = {
 	series: [{
-		name: "Music",
-		data: [1, 15, 26, 20, 33, 27]
-	},{
-		name: "Photos",
-		data: [3, 33, 21, 42, 19, 32]
-	},{
-		name: "Files",
-		data: [0, 39, 52, 11, 29, 43]
+		  data: [{
+			      x: new Date(2016, 01, 01),
+			      y: [51.98, 56.29, 51.59, 53.85]
+			    },
+			    {
+					    x: new Date(2016, 02, 01),
+					    y: [53.66, 54.99, 51.35, 52.95]
+					  },
+			    {
+					    x: new Date(2016, 08, 01),
+					    y: [52.76, 57.35, 52.15, 57.03]
+					  }]
 	}],
-	title: {
-		text: 'Media',
-		align: 'left',
-		offsetY: 25,
-		offsetX: 20
-	},
-	subtitle: {
-		text: 'Statistics',
-		offsetY: 55,
-		offsetX: 20
-	},
-	markers: {
-		size: 6,
-		strokeWidth: 0,
-		hover: {
-			size: 9
-		}
-	},
-	grid: {
-		show: true,
-		padding: {
-			bottom: 0
-		}
-	},
-	labels: ['01/15/2002', '01/16/2002', '01/17/2002', '01/18/2002', '01/19/2002', '01/20/2002'],
-	xaxis: {
-		tooltip: {
-			enabled: false
-		}
-	},
-	legend: {
-		position: 'top',
-		horizontalAlign: 'right',
-		offsetY: -20
-	}
+	          chart: {
+				            type: 'candlestick',
+					            height: 350
+				          },
+	        title: {
+				          text: 'CandleStick Chart',
+					          align: 'left'
+				        },
+	        xaxis: {
+				          type: 'datetime'
+				        },
+	        yaxis: {
+				          tooltip: {
+							              enabled: true
+							            }
+				        },
+	  xaxis: {
+		      tooltip: {
+				        enabled: false
+				      }
+		    },
+	  legend: {
+		      position: 'top',
+		      horizontalAlign: 'right',
+		      offsetY: -20
+		    }
 }
 
-var chartLine = new ApexCharts(document.querySelector('#line-adwords'), optionsLine);
-chartLine.render();
+var chartCandel = new ApexCharts(document.querySelector('#candel'), optionsCandel);
+chartCandel.render();
 
 var optionsCircle4 = {
 	chart: {
