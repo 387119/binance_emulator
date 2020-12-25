@@ -26,14 +26,4 @@ services:
       - db
     volumes:
       - ./app/www:/var/www/html
-  graf:
-    image: grafana/grafana
-    ports:
-      - 0.0.0.0:3000:3000
-    environment:
-      GF_INSTALL_PLUGINS: "https://github.com/ilgizar/ilgizar-candlestick-panel/archive/master.zip;ilgizar-candlestick-panel"
-      #grafana-cli --pluginUrl https://github.com/ilgizar/ilgizar-candlestick-panel/archive/master.zip plugins install ilgizar-candlestick-panel
-    volumes:
-      - ./grafana/grafana.ini:/etc/grafana/grafana.ini
-      - ./tmp/grafana:/var/lib/grafana
 

@@ -4,12 +4,15 @@
   vars:
     emulator_path: "/opt/binance/binance-market-emulator"
     ansible_python_interpreter: "/usr/bin/python3"
+  vars_files:
+    - ansible/vars/vault.yml
   tasks:
-    - name: create dir for grafana data
-      file:
-        path: "{{ emulator_path }}/tmp/grafana"
-        mode: 0777
-        state: "directory"
+    - name: Install additional yum packages
+      yum:
+        name:
+          - python3
+          - python3-pip
+        state: present
     - name: create dir for pgdata
       file:
         path: "{{ emulator_path }}/tmp/pgdata"
@@ -26,10 +29,6 @@
     - name: copy db files
       copy:
         src: ./db
-        dest: "{{ emulator_path }}"
-    - name: copy grafana files
-      copy:
-        src: ./grafana
         dest: "{{ emulator_path }}"
     - name: Stop binance emulator app
       community.general.docker_compose:
