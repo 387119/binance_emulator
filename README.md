@@ -6,6 +6,9 @@ page with deployed app https://test.defpoint.org/cc/bot1/
 
 ## automation
 
+## deploy to test host
+`bash# ./deploy-to-bars.sh`
+
 ## test host prerequesites
 - docker
 - docker-compose
