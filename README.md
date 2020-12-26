@@ -6,10 +6,10 @@ page with deployed app https://test.defpoint.org/cc/bot1/
 
 ## automation
 
-## deploy to test host
+### deploy to test host
 `bash# ./deploy-to-bars.sh`
 
-## test host prerequesites
+### test host prerequesites
 - docker
 - docker-compose
 - python3
@@ -25,4 +25,9 @@ example: run from directory with cloned repository
 echo "known password" > ansible/.ansible_vault_file
 ```
 > :warning: **git clean -fdx will delete this file, so make a copy**
+
+### add additional host
+- modify ansible/hosts file and add/update required host there
+- use modified content of `./deploy-to-bars.sh` and run playbook against your host
+> :warning: ** host should be available by http(s) **
 
