@@ -51,7 +51,7 @@ function getCurrentTime(){//возвращает значение времени
 
 function placeOrder($in){
 	$ctime=getCurrentTime();
-	$sql="insert into binance.bot1_orders (status,symbol,type,price,amount,time_open) values ('open','".$in['symbol']."','".$in['side']."',".$in['price'].",".$in['quantity'].",'".$ctime."') returning *;";
+	$sql="insert into binance.bot1_orders (status,symbol,type,price,amount,time_open,real_tstamp) values ('open','".$in['symbol']."','".$in['side']."',".$in['price'].",".$in['quantity'].",'".$ctime."',now()) returning *;";
 	$res=db($sql);
 	$orderid=$res[0]['orderid'];
 	if ($in['type']=='BUY'){
