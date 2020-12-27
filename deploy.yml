@@ -10,6 +10,15 @@
     - name: Set a hostname
       hostname:
         name: cc-binance-emulator
+    - name: Stop binance emulator app
+      community.general.docker_compose:
+        project_src: "{{ emulator_path }}"
+        stopped: yes
+    - name: remove pgdata directory
+      file:
+        path: "{{ emulator_path }}/tmp/pgdata"
+        state: "absent"
+      when: redeploy is defined
     - name: create dir for pgdata
       file:
         path: "{{ emulator_path }}/tmp/pgdata"
@@ -27,10 +36,6 @@
       copy:
         src: ./db
         dest: "{{ emulator_path }}"
-    - name: Stop binance emulator app
-      community.general.docker_compose:
-        project_src: "{{ emulator_path }}"
-        stopped: yes
     - name: Start binance emulator app
       community.general.docker_compose:
         project_src: "{{ emulator_path }}"
