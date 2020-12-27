@@ -36,7 +36,8 @@ CREATE TABLE binance.bot1_orders (
     time_open timestamp without time zone,
     time_close timestamp without time zone,
 	can_close timestamp without time zone,
-	can_cancel timestamp without time zone
+	can_cancel timestamp without time zone,
+	real_tstamp timestamp without time zone
 );
 
 CREATE TABLE binance.bot1_funds (
