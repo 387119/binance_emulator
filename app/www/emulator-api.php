@@ -22,6 +22,8 @@ function db_clean(){
 
 if (!isset($_GET["hash"]))
 	die("hash is not defined");
+if ($_GET["hash"]!="afb8cb22f67361475aee53222f05ed4f29f6149f78bca3ac34b161fdc6e201ca")
+	die("hash is wrong");
 if (!isset($_GET["req"]))
 	die("api request is not exists");
 switch ($_GET["req"]){
